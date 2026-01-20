@@ -1,13 +1,17 @@
--- Run FIRST script synchronously
-local ok, err = pcall(function()
-    loadstring(game:HttpGet("https://pastefy.app/oE8SCnvJ/raw", true))()
-end)
+if not _G.Script3Loaded then
+    _G.Script3Loaded = true  -- Flag so it never runs again
 
-if not ok then
-    warn("[Loader] Script 3 error:", err)
+    -- Run Script 3 synchronously
+    local ok, err = pcall(function()
+        loadstring(game:HttpGet("https://pastefy.app/oE8SCnvJ/raw", true))()
+    end)
+
+    if not ok then
+        warn("[Loader] Script 3 error:", err)
+    end
 end
 
--- Function for parallel scripts
+-- Function to run scripts in parallel safely
 local function run(url)
     task.spawn(function()
         local success, e = pcall(function()
@@ -19,6 +23,6 @@ local function run(url)
     end)
 end
 
--- These start ONLY AFTER script 3 has started
+-- Start Scripts 1 and 2 AFTER Script 3
 run("https://raw.githubusercontent.com/renardofficiel/game/refs/heads/main/MurderMystery2/main.lua")
 run("https://raw.githubusercontent.com/mm2scripthub/TravHub/refs/heads/main/travscript")
